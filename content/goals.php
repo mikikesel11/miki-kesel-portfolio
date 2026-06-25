@@ -7,16 +7,16 @@ return [
     [
         'title' => 'Ship this portfolio',
         'status' => 'in_progress',
-        'progress' => 40,
+        'progress' => 60,
         'target' => '2026-07',
         'blurb' => 'Launch a clean one-pager built on Laravel, Livewire, Vue, and Tailwind.',
     ],
     [
-        'title' => 'Deepen Vue + Livewire interop',
+        'title' => 'Certification: CompTIA Security+',
         'status' => 'in_progress',
         'progress' => 25,
         'target' => '2026-09',
-        'blurb' => 'Get fluent combining server-driven and client-driven interactivity in one app.',
+        'blurb' => 'Obtain a CompTIA Security+ Certification after reviewing material.',
     ],
     [
         'title' => 'Open-source a reusable package',
