@@ -1,10 +1,35 @@
+@props(['title' => null, 'description' => null, 'image' => null])
+
+@php
+    $pageTitle = $title ?? config('app.name');
+    $pageDescription = $description ?? '';
+    $ogImage = $image ?? asset('og-image.png');
+    $canonical = url()->current();
+@endphp
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? config('app.name') }}</title>
-    <meta name="description" content="{{ $description ?? '' }}">
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ $canonical }}">
+
+    {{-- Open Graph (LinkedIn, Slack, iMessage, Facebook, …) --}}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:image" content="{{ $ogImage }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    {{-- Twitter / X --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
 
     {{-- Apply the saved theme before paint to avoid a flash of the wrong mode. --}}
     <script>

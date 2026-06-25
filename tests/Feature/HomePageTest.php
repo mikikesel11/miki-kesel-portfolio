@@ -33,6 +33,24 @@ class HomePageTest extends TestCase
         $response->assertSee('content="'.e($profile['tagline']).'"', false);
     }
 
+    public function test_it_exposes_open_graph_and_twitter_card_tags(): void
+    {
+        $profile = $this->content()->profile();
+        $title = $profile['name'].' — '.$profile['role'];
+        $imageUrl = asset($profile['og_image']);
+
+        $response = $this->get('/');
+
+        $response->assertSee('<meta property="og:type" content="website">', false);
+        $response->assertSee('<meta property="og:title" content="'.e($title).'">', false);
+        $response->assertSee('<meta property="og:image" content="'.e($imageUrl).'">', false);
+        $response->assertSee('<meta name="twitter:card" content="summary_large_image">', false);
+        $response->assertSee('<meta name="twitter:image" content="'.e($imageUrl).'">', false);
+
+        // The referenced image must actually exist on disk.
+        $this->assertFileExists(public_path($profile['og_image']));
+    }
+
     public function test_it_renders_every_section_anchor(): void
     {
         $response = $this->get('/');

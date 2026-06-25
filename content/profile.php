@@ -10,6 +10,7 @@ return [
     'location' => 'Remote',
     'email' => 'miki.kesel11@gmail.com',
     'cv_path' => 'cv/MikiKeselResume.pdf', // place the PDF at public/cv/...
+    'og_image' => 'og-image.png', // social share card at public/og-image.png (run `npm run og:build` to regenerate)
     'socials' => [
         ['label' => 'GitHub', 'url' => 'https://github.com/mikikesel11'],
         ['label' => 'LinkedIn', 'url' => 'https://www.linkedin.com/in/mikikesel11'],

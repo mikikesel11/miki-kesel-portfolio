@@ -1,0 +1,27 @@
+<svg viewBox="0 0 1200 630" width="1200" height="630" xmlns="http://www.w3.org/2000/svg" font-family="Instrument Sans">
+  <rect x="0" y="0" width="1200" height="630" fill="#09090b"/>
+  <rect x="24" y="24" width="1152" height="582" rx="20" fill="none" stroke="#fafafa" stroke-opacity="0.09"/>
+
+  <rect x="990" y="80" width="120" height="120" rx="28" fill="#10b981" fill-opacity="0.12"/>
+  <text x="1050" y="160" text-anchor="middle" fill="#34d399" font-size="52" font-weight="700">MK</text>
+
+  <text x="92" y="200" fill="#a1a1aa" font-size="28" font-weight="500">Software Engineer · Remote</text>
+
+  <text x="88" y="320" fill="#fafafa" font-size="112" font-weight="700">Miki Kesel</text>
+
+  <text x="92" y="400" fill="#a1a1aa" font-size="35" font-weight="400">I build clean, maintainable web applications</text>
+  <text x="92" y="450" fill="#a1a1aa" font-size="35" font-weight="400">with PHP and the Laravel ecosystem.</text>
+
+  <g font-size="24" font-weight="500">
+    <rect x="90" y="520" width="118" height="50" rx="25" fill="#fafafa" fill-opacity="0.06"/>
+    <text x="149" y="552" text-anchor="middle" fill="#d4d4d8">Laravel</text>
+    <rect x="222" y="520" width="128" height="50" rx="25" fill="#fafafa" fill-opacity="0.06"/>
+    <text x="286" y="552" text-anchor="middle" fill="#d4d4d8">Livewire</text>
+    <rect x="364" y="520" width="84" height="50" rx="25" fill="#fafafa" fill-opacity="0.06"/>
+    <text x="406" y="552" text-anchor="middle" fill="#d4d4d8">Vue</text>
+    <rect x="462" y="520" width="150" height="50" rx="25" fill="#fafafa" fill-opacity="0.06"/>
+    <text x="537" y="552" text-anchor="middle" fill="#d4d4d8">TypeScript</text>
+  </g>
+
+  <text x="1110" y="554" text-anchor="end" fill="#71717a" font-size="26" font-weight="400">github.com/mikikesel11</text>
+</svg>

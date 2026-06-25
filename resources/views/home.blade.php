@@ -1,4 +1,4 @@
-<x-layouts.app :title="$profile['name'].' — '.$profile['role']" :description="$profile['tagline']">
+<x-layouts.app :title="$profile['name'].' — '.$profile['role']" :description="$profile['tagline']" :image="asset($profile['og_image'])">
     {{-- Top bar --}}
     <header class="sticky top-0 z-20 border-b border-zinc-200/70 bg-white/80 backdrop-blur dark:border-zinc-800/70 dark:bg-zinc-950/80">
         <nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">

@@ -1,7 +1,7 @@
 ---
 title: Price & Rate Validation Suite
 year: 2017
-tags: [ETL, SQL]
+tags: [ETL, SQL, PHP]
 featured: false
 ---
 Designed and built an end-to-end suite that ingested CSV data and wrote validated
