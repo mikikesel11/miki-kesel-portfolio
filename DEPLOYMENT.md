@@ -35,8 +35,17 @@ npm run build        # compiles Vue + Tailwind into public/build
 npm run og:build     # regenerates public/og-image.png
 ```
 
-This produces everything the server needs: `vendor/`, `public/build/`, and
-`public/og-image.png`. You will upload these — the server never runs Node.
+`public/build/` is **intentionally git-ignored** (`.gitignore` → `/public/build`)
+so compiled assets stay out of the repo. The deploy model is therefore
+**build locally, upload the result** — the server never runs Node. What you
+upload at deploy time:
+
+| Artifact | In git? | How it gets to the server |
+|---|---|---|
+| `public/build/` | ✗ ignored | **Build locally, upload** (SFTP/rsync) |
+| `vendor/` | ✗ ignored | Upload, **or** `composer install --no-dev` over SSH |
+| `public/og-image.png` | ✓ committed | Comes with `git clone` (rebuild + re-upload only if it changes) |
+| Everything else (app, content, `public/cv/…`) | ✓ committed | Comes with `git clone` |
 
 > Re-run `npm run build` whenever you change CSS/JS/Vue, and `npm run og:build`
 > whenever you change the share-card source or your tagline.
@@ -68,10 +77,11 @@ Put the app in `~/portfolio`, move the contents of `public/` into `public_html/`
 and edit `public_html/index.php` so the two `require` paths point at
 `~/portfolio/vendor/autoload.php` and `~/portfolio/bootstrap/app.php`.
 
-Upload via **SFTP** or, with SSH, `git clone` the repo and upload the
-locally-built `vendor/`, `public/build/`, and `public/og-image.png` separately
-(they're git-ignored). Or run `composer install --no-dev` over SSH instead of
-uploading `vendor/`.
+Recommended flow with SSH: `git clone` the repo on the server (brings the app,
+content, and committed `public/og-image.png`), then upload the two git-ignored
+build outputs — **`public/build/`** and **`vendor/`** — via SFTP/rsync. Or run
+`composer install --no-dev` over SSH instead of uploading `vendor/`. Without SSH,
+upload the whole locally-built project over SFTP. See the artifact table in §1.
 
 ---
 
