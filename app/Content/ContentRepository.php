@@ -4,7 +4,9 @@ namespace App\Content;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Throwable;
 
 /**
  * Reads the flat-file content under /content and returns typed data.
@@ -63,6 +65,7 @@ class ContentRepository
             return collect(File::files($dir))
                 ->filter(fn ($file) => $file->getExtension() === 'md')
                 ->map(fn ($file) => $this->parseProject($file->getPathname()))
+                ->filter() // drop any files that failed to parse
                 ->sortByDesc('year')
                 ->values()
                 ->all();
@@ -71,10 +74,23 @@ class ContentRepository
         return array_map(Project::fromArray(...), $raw);
     }
 
-    /** @return array<string,mixed> primitive representation, safe to cache */
-    private function parseProject(string $file): array
+    /**
+     * Parse one project markdown file. A malformed file (e.g. bad YAML
+     * front-matter) is logged and skipped rather than 500-ing the whole page.
+     *
+     * @return array<string,mixed>|null primitive representation, safe to cache
+     */
+    private function parseProject(string $file): ?array
     {
-        $document = YamlFrontMatter::parseFile($file);
+        try {
+            $document = YamlFrontMatter::parseFile($file);
+        } catch (Throwable $e) {
+            Log::warning('Skipped malformed project content file: '.$file, [
+                'exception' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
 
         return [
             'slug' => pathinfo($file, PATHINFO_FILENAME),

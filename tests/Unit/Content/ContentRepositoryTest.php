@@ -164,4 +164,22 @@ class ContentRepositoryTest extends TestCase
 
         $this->assertSame([], $repo->projects());
     }
+
+    public function test_a_malformed_project_file_is_skipped_not_fatal(): void
+    {
+        // Unquoted colon in a YAML value — the exact bug that 500'd the page.
+        File::put($this->base.'/projects/broken.md', <<<'MD'
+        ---
+        title: Bad: Title
+        year: 2024
+        ---
+        This file has invalid front-matter.
+        MD);
+
+        $projects = $this->repo->projects();
+
+        // The two valid fixtures still load; the broken one is dropped, not thrown.
+        $this->assertCount(2, $projects);
+        $this->assertSame(['New One', 'Old One'], array_map(fn ($p) => $p->title, $projects));
+    }
 }
