@@ -7,7 +7,7 @@
             <div class="flex items-center gap-6">
                 <div class="hidden gap-6 text-sm text-zinc-600 sm:flex dark:text-zinc-400">
                     <a href="#goals" class="hover:text-zinc-900 dark:hover:text-zinc-100">Goals</a>
-                    <a href="#achievements" class="hover:text-zinc-900 dark:hover:text-zinc-100">Achievements</a>
+                    <a href="#certifications" class="hover:text-zinc-900 dark:hover:text-zinc-100">Certifications</a>
                     <a href="#projects" class="hover:text-zinc-900 dark:hover:text-zinc-100">Projects</a>
                     <a href="#contact" class="hover:text-zinc-900 dark:hover:text-zinc-100">Contact</a>
                 </div>
@@ -71,21 +71,22 @@
             </div>
         </section>
 
-        {{-- Achievements --}}
-        <section id="achievements" class="scroll-mt-20 border-t border-zinc-200 py-16 dark:border-zinc-800">
-            <h2 class="mb-8 text-2xl font-bold tracking-tight">Achievements</h2>
+        {{-- Certifications --}}
+        <section id="certifications" class="scroll-mt-20 border-t border-zinc-200 py-16 dark:border-zinc-800">
+            <h2 class="mb-8 text-2xl font-bold tracking-tight">Certifications</h2>
             <ul class="space-y-6">
-                @foreach ($achievements as $achievement)
+                @foreach ($certifications as $certification)
                     <li class="flex flex-col gap-1 sm:flex-row sm:gap-6">
-                        <span class="w-20 shrink-0 text-sm text-zinc-400">{{ $achievement->date }}</span>
+                        <span class="w-20 shrink-0 text-sm text-zinc-400">{{ $certification->date }}</span>
                         <div>
-                            <h3 class="font-semibold">
-                                {{ $achievement->title }}
-                                @if ($achievement->metric)
-                                    <span class="ml-1 rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">{{ $achievement->metric }}</span>
+                            <h3 class="font-semibold">{{ $certification->title }}</h3>
+                            <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                                {{ $certification->issuer }}@if ($certification->instructor) · {{ $certification->instructor }}@endif
+                                @if ($certification->url)
+                                    <a href="{{ $certification->url }}" target="_blank" rel="noopener"
+                                       class="ml-1 font-medium text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-100">View credential</a>
                                 @endif
-                            </h3>
-                            <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ $achievement->blurb }}</p>
+                            </p>
                         </div>
                     </li>
                 @endforeach

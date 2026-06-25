@@ -4,7 +4,9 @@ namespace App\Content;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Throwable;
 
 /**
  * Reads the flat-file content under /content and returns typed data.
@@ -36,18 +38,18 @@ class ContentRepository
         return array_map(Goal::fromArray(...), $raw);
     }
 
-    /** @return Achievement[] sorted newest-first */
-    public function achievements(): array
+    /** @return Certification[] sorted newest-first */
+    public function certifications(): array
     {
-        $raw = $this->remember('achievements', function () {
-            $items = require $this->path('achievements.php');
+        $raw = $this->remember('certifications', function () {
+            $items = require $this->path('certifications.php');
 
             usort($items, fn (array $a, array $b) => strcmp($b['date'], $a['date']));
 
             return $items;
         });
 
-        return array_map(Achievement::fromArray(...), $raw);
+        return array_map(Certification::fromArray(...), $raw);
     }
 
     /** @return Project[] sorted newest-first */
@@ -63,6 +65,7 @@ class ContentRepository
             return collect(File::files($dir))
                 ->filter(fn ($file) => $file->getExtension() === 'md')
                 ->map(fn ($file) => $this->parseProject($file->getPathname()))
+                ->filter() // drop any files that failed to parse
                 ->sortByDesc('year')
                 ->values()
                 ->all();
@@ -71,10 +74,23 @@ class ContentRepository
         return array_map(Project::fromArray(...), $raw);
     }
 
-    /** @return array<string,mixed> primitive representation, safe to cache */
-    private function parseProject(string $file): array
+    /**
+     * Parse one project markdown file. A malformed file (e.g. bad YAML
+     * front-matter) is logged and skipped rather than 500-ing the whole page.
+     *
+     * @return array<string,mixed>|null primitive representation, safe to cache
+     */
+    private function parseProject(string $file): ?array
     {
-        $document = YamlFrontMatter::parseFile($file);
+        try {
+            $document = YamlFrontMatter::parseFile($file);
+        } catch (Throwable $e) {
+            Log::warning('Skipped malformed project content file: '.$file, [
+                'exception' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
 
         return [
             'slug' => pathinfo($file, PATHINFO_FILENAME),
@@ -94,7 +110,7 @@ class ContentRepository
 
     public function flush(): void
     {
-        foreach (['profile', 'goals', 'achievements', 'projects'] as $key) {
+        foreach (['profile', 'goals', 'certifications', 'projects'] as $key) {
             Cache::forget(self::CACHE_PREFIX.$key);
         }
     }
