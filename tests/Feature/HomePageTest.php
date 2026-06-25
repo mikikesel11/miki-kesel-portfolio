@@ -37,7 +37,7 @@ class HomePageTest extends TestCase
     {
         $response = $this->get('/');
 
-        foreach (['goals', 'achievements', 'projects', 'contact'] as $anchor) {
+        foreach (['goals', 'certifications', 'projects', 'contact'] as $anchor) {
             $response->assertSee('id="'.$anchor.'"', false);
         }
     }
@@ -52,15 +52,16 @@ class HomePageTest extends TestCase
         }
     }
 
-    public function test_it_renders_all_achievements_including_metrics(): void
+    public function test_it_renders_all_certifications(): void
     {
         $response = $this->get('/');
 
-        foreach ($this->content()->achievements() as $achievement) {
-            $response->assertSee($achievement->title);
-            if ($achievement->metric) {
-                $response->assertSee($achievement->metric);
-            }
+        // Always assert the section exists, even when there are no entries yet.
+        $response->assertSee('id="certifications"', false);
+
+        foreach ($this->content()->certifications() as $certification) {
+            $response->assertSee($certification->title);
+            $response->assertSee($certification->issuer);
         }
     }
 

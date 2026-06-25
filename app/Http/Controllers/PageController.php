@@ -12,7 +12,7 @@ class PageController extends Controller
         return view('home', [
             'profile' => $content->profile(),
             'goals' => $content->goals(),
-            'achievements' => $content->achievements(),
+            'certifications' => $content->certifications(),
             'projects' => $content->projects(),
         ]);
     }

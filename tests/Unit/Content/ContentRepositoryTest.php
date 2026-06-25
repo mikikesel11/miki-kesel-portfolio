@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Content;
 
-use App\Content\Achievement;
+use App\Content\Certification;
 use App\Content\ContentRepository;
 use App\Content\Goal;
 use App\Content\Project;
@@ -43,11 +43,11 @@ class ContentRepositoryTest extends TestCase
         PHP);
 
         // Deliberately out of date order to prove sorting.
-        File::put($this->base.'/achievements.php', <<<'PHP'
+        File::put($this->base.'/certifications.php', <<<'PHP'
         <?php
         return [
-            ['date' => '2024-01', 'title' => 'Older', 'metric' => null, 'blurb' => 'old'],
-            ['date' => '2025-06', 'title' => 'Newer', 'metric' => 'big win', 'blurb' => 'new'],
+            ['date' => '2024-01', 'title' => 'Older', 'issuer' => 'Udemy', 'instructor' => 'Ann', 'url' => null],
+            ['date' => '2025-06', 'title' => 'Newer', 'issuer' => 'Coursera', 'instructor' => null, 'url' => 'https://example.com/cert'],
         ];
         PHP);
 
@@ -104,15 +104,17 @@ class ContentRepositoryTest extends TestCase
         $this->assertNull($goals[1]->target);
     }
 
-    public function test_achievements_are_dtos_sorted_newest_first(): void
+    public function test_certifications_are_dtos_sorted_newest_first(): void
     {
-        $achievements = $this->repo->achievements();
+        $certifications = $this->repo->certifications();
 
-        $this->assertContainsOnlyInstancesOf(Achievement::class, $achievements);
-        $this->assertSame('Newer', $achievements[0]->title);
-        $this->assertSame('big win', $achievements[0]->metric);
-        $this->assertSame('Older', $achievements[1]->title);
-        $this->assertNull($achievements[1]->metric);
+        $this->assertContainsOnlyInstancesOf(Certification::class, $certifications);
+        $this->assertSame('Newer', $certifications[0]->title);
+        $this->assertSame('Coursera', $certifications[0]->issuer);
+        $this->assertSame('https://example.com/cert', $certifications[0]->url);
+        $this->assertSame('Older', $certifications[1]->title);
+        $this->assertSame('Ann', $certifications[1]->instructor);
+        $this->assertNull($certifications[1]->url);
     }
 
     public function test_projects_are_parsed_and_sorted_by_year_desc(): void

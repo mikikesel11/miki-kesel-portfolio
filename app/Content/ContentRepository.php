@@ -36,18 +36,18 @@ class ContentRepository
         return array_map(Goal::fromArray(...), $raw);
     }
 
-    /** @return Achievement[] sorted newest-first */
-    public function achievements(): array
+    /** @return Certification[] sorted newest-first */
+    public function certifications(): array
     {
-        $raw = $this->remember('achievements', function () {
-            $items = require $this->path('achievements.php');
+        $raw = $this->remember('certifications', function () {
+            $items = require $this->path('certifications.php');
 
             usort($items, fn (array $a, array $b) => strcmp($b['date'], $a['date']));
 
             return $items;
         });
 
-        return array_map(Achievement::fromArray(...), $raw);
+        return array_map(Certification::fromArray(...), $raw);
     }
 
     /** @return Project[] sorted newest-first */
@@ -94,7 +94,7 @@ class ContentRepository
 
     public function flush(): void
     {
-        foreach (['profile', 'goals', 'achievements', 'projects'] as $key) {
+        foreach (['profile', 'goals', 'certifications', 'projects'] as $key) {
             Cache::forget(self::CACHE_PREFIX.$key);
         }
     }
