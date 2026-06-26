@@ -2,6 +2,7 @@
 
 use App\Mail\ContactSubmissionReceived;
 use App\Models\ContactSubmission;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Validate;
@@ -52,8 +53,14 @@ new class extends Component
             'user_agent' => substr((string) request()->userAgent(), 0, 500),
         ]);
 
-        // Queued so a mail/queue hiccup never loses the message (it's already stored).
-        Mail::to(config('mail.from.address'))->queue(new ContactSubmissionReceived($submission));
+        // Notify the owner, but never let a mail failure break the UX — the
+        // submission is already stored. This matters with the sync queue, where
+        // the send runs inline during the request instead of in a worker.
+        try {
+            Mail::to(config('mail.from.address'))->queue(new ContactSubmissionReceived($submission));
+        } catch (\Throwable $e) {
+            Log::warning('Contact notification failed to send: '.$e->getMessage());
+        }
 
         $this->reset(['name', 'email', 'message']);
         $this->sent = true;

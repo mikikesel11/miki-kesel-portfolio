@@ -97,6 +97,22 @@ class ContactFormTest extends TestCase
             ->assertSet('message', '');
     }
 
+    public function test_a_mail_failure_does_not_break_a_successful_submission(): void
+    {
+        // Simulate the mail transport throwing (e.g. SMTP down). With the sync
+        // queue this happens inline, but the stored submission + success state
+        // must survive it.
+        Mail::shouldReceive('to')->andThrow(new \RuntimeException('mail server down'));
+
+        $this->fill()->call('submit')
+            ->assertHasNoErrors()
+            ->assertSet('sent', true);
+
+        $this->assertDatabaseHas('contact_submissions', [
+            'email' => $this->valid['email'],
+        ]);
+    }
+
     public function test_the_honeypot_silently_drops_bot_submissions(): void
     {
         Mail::fake();

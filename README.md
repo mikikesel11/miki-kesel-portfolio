@@ -62,19 +62,21 @@ php artisan content:flush
 
 ## Contact form
 
-Submissions are stored in the `contact_submissions` table and a queued
-notification is emailed to `MAIL_FROM_ADDRESS`. In local dev the default mail
-driver is `log`, so messages land in `storage/logs/laravel.log`. To actually send,
-configure mail in `.env` and run a queue worker:
+Submissions are stored in the `contact_submissions` table and a notification is
+emailed to `MAIL_FROM_ADDRESS`. The queue runs synchronously
+(`QUEUE_CONNECTION=sync`), so the email sends inline during the request — no queue
+worker needed. In local dev the default mail driver is `log`, so messages land in
+`storage/logs/laravel.log`; configure mail in `.env` to actually send.
+
+## Deployment
+
+Assets are built locally and uploaded (the server runs no Node):
 
 ```bash
-php artisan queue:work
+composer install --no-dev --optimize-autoloader
+npm ci && npm run build && npm run og:build
 ```
 
-## Build for production
-
-```bash
-npm run build
-php artisan config:cache && php artisan route:cache && php artisan view:cache
-php artisan content:flush
-```
+Full step-by-step for shared hosting (Eco Web Hosting) — server setup, the
+production `.env`, document root, and first-run commands — is in
+[DEPLOYMENT.md](DEPLOYMENT.md).
