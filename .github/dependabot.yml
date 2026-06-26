@@ -1,0 +1,16 @@
+# Basic `dependabot.yml` file defining a multi-ecosystem-group
+version: 2
+
+multi-ecosystem-groups:
+  infrastructure:
+    schedule:
+      interval: "weekly"
+
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    multi-ecosystem-group: "infrastructure"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    multi-ecosystem-group: "infrastructure"
