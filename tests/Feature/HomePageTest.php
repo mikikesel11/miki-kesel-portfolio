@@ -33,6 +33,17 @@ class HomePageTest extends TestCase
         $response->assertSee('content="'.e($profile['tagline']).'"', false);
     }
 
+    public function test_it_links_favicons_that_exist(): void
+    {
+        $this->get('/')
+            ->assertSee('rel="icon"', false)
+            ->assertSee('apple-touch-icon', false);
+
+        $this->assertFileExists(public_path('favicon.ico'));
+        $this->assertFileExists(public_path('favicon-32.png'));
+        $this->assertFileExists(public_path('apple-touch-icon.png'));
+    }
+
     public function test_it_exposes_open_graph_and_twitter_card_tags(): void
     {
         $profile = $this->content()->profile();

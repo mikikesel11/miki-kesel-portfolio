@@ -15,6 +15,11 @@
     <meta name="description" content="{{ $pageDescription }}">
     <link rel="canonical" href="{{ $canonical }}">
 
+    {{-- Favicons (generated from resources/og/favicon.svg via `npm run favicon:build`) --}}
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('favicon-32.png') }}" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+
     {{-- Open Graph (LinkedIn, Slack, iMessage, Facebook, …) --}}
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ config('app.name') }}">

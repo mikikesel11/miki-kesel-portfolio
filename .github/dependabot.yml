@@ -1,16 +1,18 @@
-# Basic `dependabot.yml` file defining a multi-ecosystem-group
+# Dependabot configuration — weekly dependency update PRs.
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 version: 2
-
-multi-ecosystem-groups:
-  infrastructure:
-    schedule:
-      interval: "weekly"
-
 updates:
   - package-ecosystem: "composer"
     directory: "/"
-    multi-ecosystem-group: "infrastructure"
+    schedule:
+      interval: "weekly"
 
   - package-ecosystem: "npm"
     directory: "/"
-    multi-ecosystem-group: "infrastructure"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
