@@ -5,7 +5,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "og:build": "node scripts/og-image.mjs"
+        "og:build": "node scripts/og-image.mjs",
+        "favicon:build": "node scripts/favicon.mjs"
     },
     "devDependencies": {
         "@resvg/resvg-js": "^2.6.2",
