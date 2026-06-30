@@ -42,12 +42,12 @@
                     Get in touch
                 </a>
                 @if (! empty($profile['cv_path']) && file_exists(public_path($profile['cv_path'])))
-                    <a href="{{ asset($profile['cv_path']) }}" download class="rounded-lg border border-zinc-300 px-5 py-2.5 font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                    <a href="{{ asset($profile['cv_path']) }}" download class="rounded-lg border border-zinc-300 px-5 py-2.5 font-medium hover:border-accent hover:bg-accent/5 hover:text-accent dark:border-zinc-700 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-100">
                         Download Resume
                     </a>
                 @endif
                 @foreach ($profile['socials'] as $social)
-                    <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="rounded-lg border border-zinc-300 px-5 py-2.5 font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                    <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="rounded-lg border border-zinc-300 px-5 py-2.5 font-medium hover:border-accent hover:bg-accent/5 hover:text-accent dark:border-zinc-700 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-100">
                         {{ $social['label'] }}
                     </a>
                 @endforeach

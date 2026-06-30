@@ -87,21 +87,21 @@ new class extends Component
             <div>
                 <label for="name" class="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">Name</label>
                 <input id="name" type="text" wire:model.blur="name"
-                    class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100" />
+                    class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40 dark:focus:border-zinc-500 dark:focus:ring-0 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100" />
                 @error('name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <label for="email" class="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">Email</label>
                 <input id="email" type="email" wire:model.blur="email"
-                    class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100" />
+                    class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40 dark:focus:border-zinc-500 dark:focus:ring-0 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100" />
                 @error('email') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <label for="message" class="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">Message</label>
                 <textarea id="message" rows="5" wire:model.blur="message"
-                    class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"></textarea>
+                    class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40 dark:focus:border-zinc-500 dark:focus:ring-0 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"></textarea>
                 @error('message') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
