@@ -22,6 +22,12 @@ return [
         'key' => env('RESEND_API_KEY'),
     ],
 
+    'brevo' => [
+        // JS event-tracking client key (Brevo → Automation → Settings → Track & Log).
+        // The tracker only loads when this is set.
+        'client_key' => env('BREVO_CLIENT_KEY'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
