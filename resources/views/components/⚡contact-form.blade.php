@@ -106,7 +106,7 @@ new class extends Component
             </div>
 
             <button type="submit"
-                class="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white transition hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+                class="rounded-lg bg-accent px-5 py-2.5 font-medium text-white transition hover:bg-accent-hover disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
                 wire:loading.attr="disabled">
                 <span wire:loading.remove wire:target="submit">Send message</span>
                 <span wire:loading wire:target="submit">Sending…</span>

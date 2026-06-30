@@ -48,7 +48,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
+<body class="bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
     {{ $slot }}
 </body>
 </html>

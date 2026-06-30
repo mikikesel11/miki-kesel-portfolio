@@ -74,7 +74,7 @@ function toggleTag(tag) {
                 class="rounded-full border px-3 py-1 text-xs font-medium transition"
                 :class="
                     activeTag === tag
-                        ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
+                        ? 'border-accent bg-accent text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900'
                         : 'border-zinc-300 text-zinc-600 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-400'
                 "
             >
@@ -112,7 +112,7 @@ function toggleTag(tag) {
                         :href="project.links.live"
                         target="_blank"
                         rel="noopener"
-                        class="font-medium text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-100"
+                        class="font-medium text-accent underline-offset-4 hover:underline dark:text-zinc-100"
                     >
                         Live
                     </a>
