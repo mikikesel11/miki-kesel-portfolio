@@ -81,7 +81,7 @@ new class extends Component
         <form wire:submit="submit" class="space-y-4">
         <script>
             function trackBrevo() {
-                if (! Brevo) {
+                if (! window.Brevo) {
                     console.log('Brevo not found');
                     return;
                 }
@@ -94,7 +94,7 @@ new class extends Component
                 const attributes = { FIRSTNAME: parts.shift() || '', LASTNAME: parts.join(' ') };
                 Brevo.push(['identify', {identifiers : {email_id : email}, attributes : attributes}]);
                 const event_name = 'contact_form_submitted';
-                Brevo.push(['track', event_name, attributes]);
+                Brevo.push(['track', event_name]);
             }
         </script>
             {{-- Honeypot: visually hidden, ignored by humans --}}
