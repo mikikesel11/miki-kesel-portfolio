@@ -6,10 +6,10 @@
 return [
     [
         'title' => 'Ship this portfolio',
-        'status' => 'in_progress',
-        'progress' => 60,
+        'status' => 'done',
+        'progress' => 100,
         'target' => '2026-07',
-        'blurb' => 'Launch a clean one-pager built on Laravel, Livewire, Vue, and Tailwind.',
+        'blurb' => 'Launch a clean one-pager built on Laravel, Livewire, Vue, and Tailwind. Target was July, accomplished in late June.',
     ],
     [
         'title' => 'Certification: CompTIA Security+',
@@ -24,5 +24,12 @@ return [
         'progress' => 0,
         'target' => '2026-12',
         'blurb' => 'Extract something useful from my projects and publish it on Packagist.',
+    ],
+    [
+        'title' => 'Build resource site with game for NeuroDivergents',
+        'status' => 'in_progress',
+        'progress' => 10,
+        'target' => '2026-10',
+        'blurb' => 'Build and launch a site directed towards the NeuroDivergent spectrum with resources and a game to help with daily life activities.',
     ],
 ];

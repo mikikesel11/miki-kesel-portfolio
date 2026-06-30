@@ -43,22 +43,27 @@
                 </a>
                 @if (! empty($profile['cv_path']) && file_exists(public_path($profile['cv_path'])))
                     <a href="{{ asset($profile['cv_path']) }}" download class="rounded-lg border border-zinc-300 px-5 py-2.5 font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
-                        Download CV
+                        Download Resume
                     </a>
                 @endif
+                @foreach ($profile['socials'] as $social)
+                    <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="rounded-lg border border-zinc-300 px-5 py-2.5 font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                        {{ $social['label'] }}
+                    </a>
+                @endforeach
             </div>
         </section>
 
         {{-- Current goals --}}
         <section id="goals" class="scroll-mt-20 border-t border-zinc-200 py-16 dark:border-zinc-800">
             <h2 class="mb-8 text-2xl font-bold tracking-tight">Current goals</h2>
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="grid gap-5 grid-cols-2">
                 @foreach ($goals as $goal)
                     <div class="rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
-                        <div class="mb-2 flex items-center justify-between">
+                        <div class="mb-2 gap-4 flex items-center justify-between">
                             <h3 class="font-semibold">{{ $goal->title }}</h3>
                             @if ($goal->target)
-                                <span class="text-xs text-zinc-400">{{ $goal->target }}</span>
+                                <span class="shrink-0 whitespace-nowrap text-xs text-zinc-400">{{ $goal->target }}</span>
                             @endif
                         </div>
                         <p class="mb-4 text-sm text-zinc-600 dark:text-zinc-400">{{ $goal->blurb }}</p>

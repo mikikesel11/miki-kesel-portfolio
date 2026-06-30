@@ -137,7 +137,7 @@ class HomePageTest extends TestCase
             $this->markTestSkipped('A real CV PDF is present; cannot assert the hidden state.');
         }
 
-        $this->get('/')->assertDontSee('Download CV');
+        $this->get('/')->assertDontSee('Download Resume');
     }
 
     public function test_cv_download_button_appears_when_pdf_exists(): void
@@ -153,7 +153,7 @@ class HomePageTest extends TestCase
 
         try {
             $this->get('/')
-                ->assertSee('Download CV')
+                ->assertSee('Download Resume')
                 ->assertSee('href="'.asset($cvPath).'"', false);
         } finally {
             if (! $preExisting) {

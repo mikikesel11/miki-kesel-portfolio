@@ -30,10 +30,33 @@ class ContentRepository
         return $this->remember('profile', fn () => require $this->path('profile.php'));
     }
 
-    /** @return Goal[] */
+    /** @return Goal[] sorted by target date ascending, untargeted goals last */
     public function goals(): array
     {
-        $raw = $this->remember('goals', fn () => require $this->path('goals.php'));
+        $raw = $this->remember('goals', function () {
+            $items = require $this->path('goals.php');
+
+            usort($items, function (array $a, array $b) {
+                $at = $a['target'] ?? null;
+                $bt = $b['target'] ?? null;
+
+                if (empty($at) && empty($bt)) {
+                    return 0;
+                }
+
+                // A goal without a target always sorts after one with a target.
+                if (empty($at)) {
+                    return 1;
+                }
+                if (empty($bt)) {
+                    return -1;
+                }
+
+                return strcmp($at, $bt);
+            });
+
+            return $items;
+        });
 
         return array_map(Goal::fromArray(...), $raw);
     }
