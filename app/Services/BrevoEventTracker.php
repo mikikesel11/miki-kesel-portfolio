@@ -2,21 +2,28 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
+use Brevo\Brevo;
+use Brevo\Event\Requests\CreateEventRequest;
+use Brevo\Event\Types\CreateEventRequestIdentifiers;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
- * Sends custom events to Brevo's v3 Events API
- * (https://developers.brevo.com/reference/create-event).
+ * Sends custom events to Brevo's v3 Events API via the official SDK
+ * (getbrevo/brevo-php), authenticated with a standard API key (BREVO_API_KEY).
  *
- * Authenticated with a standard API key (`api-key` header), configured via
- * BREVO_API_KEY. No-ops when unconfigured, and never throws — a tracking hiccup
- * must not affect the request that triggered it.
+ * No-ops when unconfigured, and never throws — a tracking hiccup must not affect
+ * the request that triggered it.
  */
 class BrevoEventTracker
 {
-    private const ENDPOINT = 'https://api.brevo.com/v3/events';
+    /**
+     * @param array<string,mixed> $clientOptions Brevo SDK options — used in tests
+     *        to inject a mock HTTP client (e.g. ['client' => $guzzle]).
+     */
+    public function __construct(private readonly array $clientOptions = [])
+    {
+    }
 
     public function contactFormSubmitted(string $email, ?string $name): void
     {
@@ -32,23 +39,16 @@ class BrevoEventTracker
         $lastName = implode(' ', $parts);
 
         try {
-            Http::asJson()
-                ->timeout(5)
-                ->withHeaders([
-                    'accept' => 'application/json',
-                    'api-key' => $apiKey,
-                ])
-                ->post(self::ENDPOINT, [
-                    'event_name' => 'contact_form_submitted',
-                    'identifiers' => [
-                        'email_id' => $email,
-                    ],
-                    'contact_properties' => [
+            (new Brevo($apiKey, $this->clientOptions))
+                ->event
+                ->createEvent(new CreateEventRequest([
+                    'eventName' => 'contact_form_submitted',
+                    'identifiers' => new CreateEventRequestIdentifiers(['emailId' => $email]),
+                    'contactProperties' => [
                         'FIRSTNAME' => $firstName,
                         'LASTNAME' => $lastName,
                     ],
-                ])
-                ->throw();
+                ]));
         } catch (Throwable $e) {
             Log::warning('Brevo event tracking failed: '.$e->getMessage());
         }

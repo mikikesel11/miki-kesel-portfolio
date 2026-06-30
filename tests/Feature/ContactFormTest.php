@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Mail\ContactSubmissionReceived;
 use App\Models\ContactSubmission;
+use App\Services\BrevoEventTracker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -35,33 +35,18 @@ class ContactFormTest extends TestCase
             ->assertSet('sent', false);
     }
 
-    public function test_a_valid_submission_sends_a_brevo_event_when_configured(): void
+    public function test_a_valid_submission_reports_the_event_to_brevo(): void
     {
-        config(['services.brevo.api_key' => 'test-api-key']);
         Mail::fake();
-        Http::fake(['api.brevo.com/*' => Http::response([], 204)]);
+
+        // The form's job is to hand the submission to the tracker; the tracker's
+        // SDK call is covered in BrevoEventTrackerTest.
+        $this->mock(BrevoEventTracker::class)
+            ->shouldReceive('contactFormSubmitted')
+            ->once()
+            ->with($this->valid['email'], $this->valid['name']);
 
         $this->fill()->call('submit')->assertHasNoErrors();
-
-        Http::assertSent(function ($request) {
-            return $request->url() === 'https://api.brevo.com/v3/events'
-                && $request->hasHeader('api-key', 'test-api-key')
-                && $request['event_name'] === 'contact_form_submitted'
-                && $request['identifiers']['email_id'] === $this->valid['email']
-                && $request['contact_properties']['FIRSTNAME'] === 'Jane'
-                && $request['contact_properties']['LASTNAME'] === 'Doe';
-        });
-    }
-
-    public function test_no_brevo_event_is_sent_when_unconfigured(): void
-    {
-        config(['services.brevo.api_key' => null]);
-        Mail::fake();
-        Http::fake();
-
-        $this->fill()->call('submit')->assertHasNoErrors();
-
-        Http::assertNothingSent();
     }
 
     public function test_it_requires_all_fields(): void
