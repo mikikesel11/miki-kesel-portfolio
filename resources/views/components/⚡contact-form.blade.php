@@ -80,7 +80,7 @@ new class extends Component
     @else
         <form wire:submit="submit" class="space-y-4">
         <script>
-            trackBrevo() {
+            function trackBrevo() {
                 if (! window.Brevo) {
                     console.log('Brevo not found');
                     return;
