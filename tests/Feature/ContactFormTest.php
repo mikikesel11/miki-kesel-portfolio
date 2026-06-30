@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\ContactSubmissionReceived;
 use App\Models\ContactSubmission;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -32,6 +33,35 @@ class ContactFormTest extends TestCase
         Livewire::test('contact-form')
             ->assertOk()
             ->assertSet('sent', false);
+    }
+
+    public function test_a_valid_submission_sends_a_brevo_event_when_configured(): void
+    {
+        config(['services.brevo.ma_key' => 'test-ma-key']);
+        Mail::fake();
+        Http::fake(['in-automate.brevo.com/*' => Http::response([], 200)]);
+
+        $this->fill()->call('submit')->assertHasNoErrors();
+
+        Http::assertSent(function ($request) {
+            return $request->url() === 'https://in-automate.brevo.com/api/v2/trackEvent'
+                && $request->hasHeader('ma-key', 'test-ma-key')
+                && $request['event'] === 'contact_form_submitted'
+                && $request['email'] === $this->valid['email']
+                && $request['properties']['FIRSTNAME'] === 'Jane'
+                && $request['properties']['LASTNAME'] === 'Doe';
+        });
+    }
+
+    public function test_no_brevo_event_is_sent_when_unconfigured(): void
+    {
+        config(['services.brevo.ma_key' => null]);
+        Mail::fake();
+        Http::fake();
+
+        $this->fill()->call('submit')->assertHasNoErrors();
+
+        Http::assertNothingSent();
     }
 
     public function test_it_requires_all_fields(): void

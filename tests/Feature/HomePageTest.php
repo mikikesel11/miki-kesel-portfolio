@@ -33,18 +33,6 @@ class HomePageTest extends TestCase
         $response->assertSee('content="'.e($profile['tagline']).'"', false);
     }
 
-    public function test_brevo_tracker_loads_only_when_configured(): void
-    {
-        config(['services.brevo.client_key' => null]);
-        $this->get('/')->assertDontSee('cdn.brevo.com');
-
-        config(['services.brevo.client_key' => 'demo-key-123']);
-        $this->get('/')
-            ->assertSee('cdn.brevo.com')
-            ->assertSee('demo-key-123', false)
-            ->assertSee('trackBrevo', false); // contact form hooks the click
-    }
-
     public function test_it_links_favicons_that_exist(): void
     {
         $this->get('/')

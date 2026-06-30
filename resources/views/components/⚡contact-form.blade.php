@@ -2,6 +2,7 @@
 
 use App\Mail\ContactSubmissionReceived;
 use App\Models\ContactSubmission;
+use App\Services\BrevoEventTracker;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
@@ -62,6 +63,9 @@ new class extends Component
             Log::warning('Contact notification failed to send: '.$e->getMessage());
         }
 
+        // Report the submission to Brevo (no-ops when unconfigured, never throws).
+        app(BrevoEventTracker::class)->contactFormSubmitted($this->email, $this->name);
+
         $this->reset(['name', 'email', 'message']);
         $this->sent = true;
     }
@@ -79,24 +83,6 @@ new class extends Component
         </div>
     @else
         <form wire:submit="submit" class="space-y-4">
-        <script>
-            function trackBrevo() {
-                if (! window.Brevo) {
-                    console.log('Brevo not found');
-                    return;
-                }
-                const email = (document.getElementById('email')?.value || '').trim();
-                if (! email.includes('@')) {
-                    console.log('email does not include @');
-                    return;
-                }
-                const parts = (document.getElementById('name')?.value || '').trim().split(/\s+/).filter(Boolean);
-                const attributes = { FIRSTNAME: parts.shift() || '', LASTNAME: parts.join(' ') };
-                Brevo.push(['identify', {identifiers : {email_id : email}, attributes : attributes}]);
-                const event_name = 'button_clicked';
-                Brevo.push(['track', event_name]);
-            }
-        </script>
             {{-- Honeypot: visually hidden, ignored by humans --}}
             <div class="hidden" aria-hidden="true">
                 <label>Website<input type="text" wire:model="website" tabindex="-1" autocomplete="off" /></label>
@@ -124,7 +110,6 @@ new class extends Component
             </div>
 
             <button type="submit"
-                @click="trackBrevo()"
                 class="rounded-lg bg-accent px-5 py-2.5 font-medium text-white transition hover:bg-accent-hover disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
                 wire:loading.attr="disabled">
                 <span wire:loading.remove wire:target="submit">Send message</span>
