@@ -23,9 +23,9 @@ return [
     ],
 
     'brevo' => [
-        // Marketing Automation key (ma-key) for the REST event-tracking endpoint
-        // (Brevo → Automation → Settings). Events are only sent when this is set.
-        'ma_key' => env('BREVO_MA_KEY'),
+        // Standard API key (api-key header) for the v3 Events API
+        // (Brevo → SMTP & API → API Keys). Events are only sent when this is set.
+        'api_key' => env('BREVO_API_KEY'),
     ],
 
     'ses' => [

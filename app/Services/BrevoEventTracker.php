@@ -7,22 +7,22 @@ use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
- * Sends custom events to Brevo's REST tracking endpoint
- * (https://developers.brevo.com/docs/track-custom-events-rest).
+ * Sends custom events to Brevo's v3 Events API
+ * (https://developers.brevo.com/reference/create-event).
  *
- * Authenticated with the Marketing Automation key (`ma-key`), configured via
- * BREVO_MA_KEY. No-ops when unconfigured, and never throws — a tracking hiccup
+ * Authenticated with a standard API key (`api-key` header), configured via
+ * BREVO_API_KEY. No-ops when unconfigured, and never throws — a tracking hiccup
  * must not affect the request that triggered it.
  */
 class BrevoEventTracker
 {
-    private const ENDPOINT = 'https://in-automate.brevo.com/api/v2/trackEvent';
+    private const ENDPOINT = 'https://api.brevo.com/v3/events';
 
     public function contactFormSubmitted(string $email, ?string $name): void
     {
-        $maKey = config('services.brevo.ma_key');
+        $apiKey = config('services.brevo.api_key');
 
-        if (! $maKey) {
+        if (! $apiKey) {
             return;
         }
 
@@ -36,13 +36,14 @@ class BrevoEventTracker
                 ->timeout(5)
                 ->withHeaders([
                     'accept' => 'application/json',
-                    'ma-key' => $maKey,
+                    'api-key' => $apiKey,
                 ])
                 ->post(self::ENDPOINT, [
-                    'email' => $email,
-                    'event' => 'contact_form_submitted',
-                    // Reserved keys `email`/`event` must not appear in properties.
-                    'properties' => [
+                    'event_name' => 'contact_form_submitted',
+                    'identifiers' => [
+                        'email_id' => $email,
+                    ],
+                    'contact_properties' => [
                         'FIRSTNAME' => $firstName,
                         'LASTNAME' => $lastName,
                     ],
