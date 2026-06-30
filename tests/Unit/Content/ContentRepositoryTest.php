@@ -104,6 +104,23 @@ class ContentRepositoryTest extends TestCase
         $this->assertNull($goals[1]->target);
     }
 
+    public function test_goals_are_sorted_by_target_with_untargeted_last(): void
+    {
+        File::put($this->base.'/goals.php', <<<'PHP'
+        <?php
+        return [
+            ['title' => 'No target', 'status' => 'planned', 'progress' => 0, 'target' => null, 'blurb' => ''],
+            ['title' => 'Later', 'status' => 'planned', 'progress' => 0, 'target' => '2026-12', 'blurb' => ''],
+            ['title' => 'Soon', 'status' => 'in_progress', 'progress' => 0, 'target' => '2026-03', 'blurb' => ''],
+        ];
+        PHP);
+        $this->repo->flush();
+
+        $titles = array_map(fn (Goal $g) => $g->title, $this->repo->goals());
+
+        $this->assertSame(['Soon', 'Later', 'No target'], $titles);
+    }
+
     public function test_certifications_are_dtos_sorted_newest_first(): void
     {
         $certifications = $this->repo->certifications();
