@@ -23,9 +23,9 @@ return [
     ],
 
     'brevo' => [
-        // JS event-tracking client key (Brevo → Automation → Settings → Track & Log).
-        // The tracker only loads when this is set.
-        'client_key' => env('BREVO_CLIENT_KEY'),
+        // Marketing Automation key (ma-key) for the REST event-tracking endpoint
+        // (Brevo → Automation → Settings). Events are only sent when this is set.
+        'ma_key' => env('BREVO_MA_KEY'),
     ],
 
     'ses' => [

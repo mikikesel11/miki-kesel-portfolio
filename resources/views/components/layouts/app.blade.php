@@ -46,22 +46,6 @@
         })();
     </script>
 
-    @if (config('services.brevo.client_key'))
-        {{-- Brevo JS event tracker --}}
-        <script src="https://cdn.brevo.com/js/sdk-loader.js" async></script>
-        <script>
-            // Version: 2.0
-            window.Brevo = window.Brevo || [];
-            Brevo.push([
-                "init",
-                {
-                client_key: "{{ config('services.brevo.client_key') }}",
-                // Optional: Add other initialization options, see documentation
-                }
-            ]);
-        </script>
-    @endif
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
