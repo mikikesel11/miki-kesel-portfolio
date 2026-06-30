@@ -37,25 +37,25 @@ class ContactFormTest extends TestCase
 
     public function test_a_valid_submission_sends_a_brevo_event_when_configured(): void
     {
-        config(['services.brevo.ma_key' => 'test-ma-key']);
+        config(['services.brevo.api_key' => 'test-api-key']);
         Mail::fake();
-        Http::fake(['in-automate.brevo.com/*' => Http::response([], 200)]);
+        Http::fake(['api.brevo.com/*' => Http::response([], 204)]);
 
         $this->fill()->call('submit')->assertHasNoErrors();
 
         Http::assertSent(function ($request) {
-            return $request->url() === 'https://in-automate.brevo.com/api/v2/trackEvent'
-                && $request->hasHeader('ma-key', 'test-ma-key')
-                && $request['event'] === 'contact_form_submitted'
-                && $request['email'] === $this->valid['email']
-                && $request['properties']['FIRSTNAME'] === 'Jane'
-                && $request['properties']['LASTNAME'] === 'Doe';
+            return $request->url() === 'https://api.brevo.com/v3/events'
+                && $request->hasHeader('api-key', 'test-api-key')
+                && $request['event_name'] === 'contact_form_submitted'
+                && $request['identifiers']['email_id'] === $this->valid['email']
+                && $request['contact_properties']['FIRSTNAME'] === 'Jane'
+                && $request['contact_properties']['LASTNAME'] === 'Doe';
         });
     }
 
     public function test_no_brevo_event_is_sent_when_unconfigured(): void
     {
-        config(['services.brevo.ma_key' => null]);
+        config(['services.brevo.api_key' => null]);
         Mail::fake();
         Http::fake();
 
