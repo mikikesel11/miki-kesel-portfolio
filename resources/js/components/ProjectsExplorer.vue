@@ -52,12 +52,12 @@ function toggleTag(tag) {
                 v-model="search"
                 type="search"
                 placeholder="Search projects…"
-                class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:border-zinc-500 focus:outline-none md:max-w-xs dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40 dark:focus:border-zinc-500 dark:focus:ring-0 md:max-w-xs dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
             />
 
             <select
                 v-model="sort"
-                class="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                class="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40 dark:focus:border-zinc-500 dark:focus:ring-0 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
             >
                 <option value="year-desc">Newest first</option>
                 <option value="year-asc">Oldest first</option>

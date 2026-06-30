@@ -12,7 +12,9 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    /* Violet accent for the light theme (softens the stark black-on-white). */
+    /* Violet accent for the light theme (softens the stark black-on-white).
+       accent-hover is deliberately a few stops darker so the hover state reads
+       clearly, including for low-vision users (white text stays ~9:1 contrast). */
     --color-accent: #9542f5;
-    --color-accent-hover: #7c2bdb;
+    --color-accent-hover: #5b21b6;
 }
