@@ -80,13 +80,13 @@ new class extends Component
     @else
         <form wire:submit="submit" class="space-y-4" x-data="{
             trackBrevo() {
-                if (! window.sendinblue) return;
+                if (! window.Brevo) return;
                 const email = (document.getElementById('email')?.value || '').trim();
                 if (! email.includes('@')) return;
                 const parts = (document.getElementById('name')?.value || '').trim().split(/\s+/).filter(Boolean);
                 const attributes = { FIRSTNAME: parts.shift() || '', LASTNAME: parts.join(' ') };
-                window.sendinblue.identify(email, attributes);
-                window.sendinblue.track('contact_form_submitted', Object.assign({ email }, attributes));
+                window.Brevo.push(['identify', {identifiers : {email_id : email}, attributes : {attributes}]);
+                window.Brevo.push(['track', 'contact_form_submitted', attributes]);
             }
         }">
             {{-- Honeypot: visually hidden, ignored by humans --}}

@@ -36,11 +36,11 @@ class HomePageTest extends TestCase
     public function test_brevo_tracker_loads_only_when_configured(): void
     {
         config(['services.brevo.client_key' => null]);
-        $this->get('/')->assertDontSee('sibautomation.com');
+        $this->get('/')->assertDontSee('cdn.brevo.com');
 
         config(['services.brevo.client_key' => 'demo-key-123']);
         $this->get('/')
-            ->assertSee('sibautomation.com')
+            ->assertSee('cdn.brevo.com')
             ->assertSee('demo-key-123', false)
             ->assertSee('trackBrevo', false); // contact form hooks the click
     }
