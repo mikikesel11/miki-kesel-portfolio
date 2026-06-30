@@ -93,7 +93,7 @@ new class extends Component
                 const parts = (document.getElementById('name')?.value || '').trim().split(/\s+/).filter(Boolean);
                 const attributes = { FIRSTNAME: parts.shift() || '', LASTNAME: parts.join(' ') };
                 Brevo.push(['identify', {identifiers : {email_id : email}, attributes : attributes}]);
-                const event_name = 'contact_form_submitted';
+                const event_name = 'button_clicked';
                 Brevo.push(['track', event_name]);
             }
         </script>
