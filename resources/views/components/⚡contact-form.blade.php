@@ -78,24 +78,7 @@ new class extends Component
             </button>
         </div>
     @else
-        <form wire:submit="submit" class="space-y-4" x-data="{
-            trackBrevo() {
-                if (! Brevo) {
-                    console.log('Brevo not found');
-                    return;
-                }
-                const email = (document.getElementById('email')?.value || '').trim();
-                if (! email.includes('@')) {
-                    console.log('email does not include @');
-                    return;
-                }
-                const parts = (document.getElementById('name')?.value || '').trim().split(/\s+/).filter(Boolean);
-                const attributes = { FIRSTNAME: parts.shift() || '', LASTNAME: parts.join(' ') };
-                Brevo.push(['identify', {identifiers : {email_id : email}, attributes : attributes}]);
-                const event_name = 'contact_form_submitted';
-                Brevo.push(['track', event_name, attributes]);
-            }
-        }">
+        <form wire:submit="submit" class="space-y-4">
             {{-- Honeypot: visually hidden, ignored by humans --}}
             <div class="hidden" aria-hidden="true">
                 <label>Website<input type="text" wire:model="website" tabindex="-1" autocomplete="off" /></label>
