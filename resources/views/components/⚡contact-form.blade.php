@@ -80,9 +80,15 @@ new class extends Component
     @else
         <form wire:submit="submit" class="space-y-4" x-data="{
             trackBrevo() {
-                if (! Brevo) return;
+                if (! Brevo) {
+                    console.log('Brevo not found');
+                    return;
+                }
                 const email = (document.getElementById('email')?.value || '').trim();
-                if (! email.includes('@')) return;
+                if (! email.includes('@')) {
+                    console.log('email does not include @');
+                    return;
+                }
                 const parts = (document.getElementById('name')?.value || '').trim().split(/\s+/).filter(Boolean);
                 const attributes = { FIRSTNAME: parts.shift() || '', LASTNAME: parts.join(' ') };
                 Brevo.push(['identify', {identifiers : {email_id : email}, attributes : attributes]);
