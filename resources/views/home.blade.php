@@ -6,10 +6,10 @@
 
             <div class="flex items-center gap-6">
                 <div class="hidden gap-6 text-sm text-zinc-600 sm:flex dark:text-zinc-400">
-                    <a href="#goals" class="hover:text-zinc-900 dark:hover:text-zinc-100">Goals</a>
-                    <a href="#certifications" class="hover:text-zinc-900 dark:hover:text-zinc-100">Certifications</a>
-                    <a href="#projects" class="hover:text-zinc-900 dark:hover:text-zinc-100">Projects</a>
-                    <a href="#contact" class="hover:text-zinc-900 dark:hover:text-zinc-100">Contact</a>
+                    <a href="#goals" class="hover:text-accent dark:hover:text-zinc-100">Goals</a>
+                    <a href="#certifications" class="hover:text-accent dark:hover:text-zinc-100">Certifications</a>
+                    <a href="#projects" class="hover:text-accent dark:hover:text-zinc-100">Projects</a>
+                    <a href="#contact" class="hover:text-accent dark:hover:text-zinc-100">Contact</a>
                 </div>
 
                 {{-- Theme toggle (Alpine ships with Livewire) --}}
@@ -38,7 +38,7 @@
             <p class="mt-5 max-w-2xl text-lg text-zinc-600 dark:text-zinc-400">{{ $profile['tagline'] }}</p>
 
             <div class="mt-8 flex flex-wrap gap-3">
-                <a href="#contact" class="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300">
+                <a href="#contact" class="rounded-lg bg-accent px-5 py-2.5 font-medium text-white hover:bg-accent-hover dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300">
                     Get in touch
                 </a>
                 @if (! empty($profile['cv_path']) && file_exists(public_path($profile['cv_path'])))
@@ -68,7 +68,7 @@
                         </div>
                         <p class="mb-4 text-sm text-zinc-600 dark:text-zinc-400">{{ $goal->blurb }}</p>
                         <div class="h-1.5 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                            <div class="h-full rounded-full bg-zinc-900 dark:bg-zinc-100" style="width: {{ $goal->progress }}%"></div>
+                            <div class="h-full rounded-full bg-accent dark:bg-zinc-100" style="width: {{ $goal->progress }}%"></div>
                         </div>
                         <p class="mt-2 text-xs uppercase tracking-wide text-zinc-400">{{ str_replace('_', ' ', $goal->status) }}</p>
                     </div>
@@ -89,7 +89,7 @@
                                 {{ $certification->issuer }}@if ($certification->instructor) · {{ $certification->instructor }}@endif
                                 @if ($certification->url)
                                     <a href="{{ $certification->url }}" target="_blank" rel="noopener"
-                                       class="ml-1 font-medium text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-100">View credential</a>
+                                       class="ml-1 font-medium text-accent underline-offset-4 hover:underline dark:text-zinc-100">View credential</a>
                                 @endif
                             </p>
                         </div>
@@ -137,7 +137,7 @@
             <p>© {{ date('Y') }} {{ $profile['name'] }}</p>
             <div class="flex gap-5">
                 @foreach ($profile['socials'] as $social)
-                    <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="hover:text-zinc-900 dark:hover:text-zinc-100">{{ $social['label'] }}</a>
+                    <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="hover:text-accent dark:hover:text-zinc-100">{{ $social['label'] }}</a>
                 @endforeach
             </div>
         </div>
