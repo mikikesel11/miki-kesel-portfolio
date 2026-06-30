@@ -78,9 +78,10 @@ new class extends Component
             </button>
         </div>
     @else
-        <form wire:submit="submit" class="space-y-4" x-data="{
+        <form wire:submit="submit" class="space-y-4">
+        <script>
             trackBrevo() {
-                if (! Brevo) {
+                if (! window.Brevo) {
                     console.log('Brevo not found');
                     return;
                 }
@@ -91,11 +92,11 @@ new class extends Component
                 }
                 const parts = (document.getElementById('name')?.value || '').trim().split(/\s+/).filter(Boolean);
                 const attributes = { FIRSTNAME: parts.shift() || '', LASTNAME: parts.join(' ') };
-                Brevo.push(['identify', {identifiers : {email_id : email}, attributes : attributes}]);
+                window.Brevo.push(['identify', {identifiers : {email_id : email}, attributes : attributes}]);
                 const event_name = 'contact_form_submitted';
-                Brevo.push(['track', event_name, attributes]);
+                window.Brevo.push(['track', event_name, attributes]);
             }
-        }">
+        </script>
             {{-- Honeypot: visually hidden, ignored by humans --}}
             <div class="hidden" aria-hidden="true">
                 <label>Website<input type="text" wire:model="website" tabindex="-1" autocomplete="off" /></label>
