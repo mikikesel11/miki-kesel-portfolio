@@ -17,7 +17,7 @@ new class extends Component
     #[Validate('required|email|max:190')]
     public string $email = '';
 
-    #[Validate('required|string|min:10|max:2000')]
+    #[Validate('required|string|min:10|max:8000')]
     public string $message = '';
 
     // Honeypot: real users never fill this; bots usually do.
