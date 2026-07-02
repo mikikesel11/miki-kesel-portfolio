@@ -58,7 +58,7 @@ new class extends Component
         // submission is already stored. This matters with the sync queue, where
         // the send runs inline during the request instead of in a worker.
         try {
-            Mail::to(config('mail.from.address'))->queue(new ContactSubmissionReceived($submission));
+            Mail::to(config('mail.contact_to'))->queue(new ContactSubmissionReceived($submission));
         } catch (\Throwable $e) {
             Log::warning('Contact notification failed to send: '.$e->getMessage());
         }
