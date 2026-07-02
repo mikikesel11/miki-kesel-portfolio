@@ -132,6 +132,8 @@ return [
     |
     */
 
-    'contact_to' => env('CONTACT_TO_ADDRESS', env('MAIL_FROM_ADDRESS', 'hello@example.com')),
+    // `?:` (not the env() default) so a blank CONTACT_TO_ADDRESS= falls back to
+    // the from address instead of resolving to an empty recipient.
+    'contact_to' => env('CONTACT_TO_ADDRESS') ?: env('MAIL_FROM_ADDRESS', 'hello@example.com'),
 
 ];
