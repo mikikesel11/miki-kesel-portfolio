@@ -120,4 +120,20 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Notification Recipient
+    |--------------------------------------------------------------------------
+    |
+    | Where contact-form notifications are delivered. Kept separate from the
+    | "from" address because the sender must be a Brevo-verified identity,
+    | while the recipient can be any inbox (e.g. a personal Gmail). Falls back
+    | to the "from" address when unset.
+    |
+    */
+
+    // `?:` (not the env() default) so a blank CONTACT_TO_ADDRESS= falls back to
+    // the from address instead of resolving to an empty recipient.
+    'contact_to' => env('CONTACT_TO_ADDRESS') ?: env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+
 ];

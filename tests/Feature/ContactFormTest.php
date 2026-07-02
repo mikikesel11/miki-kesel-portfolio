@@ -96,7 +96,7 @@ class ContactFormTest extends TestCase
 
         Mail::assertQueued(
             ContactSubmissionReceived::class,
-            fn (ContactSubmissionReceived $mail) => $mail->hasTo(config('mail.from.address'))
+            fn (ContactSubmissionReceived $mail) => $mail->hasTo(config('mail.contact_to'))
                 && $mail->submission->email === $this->valid['email'],
         );
     }
