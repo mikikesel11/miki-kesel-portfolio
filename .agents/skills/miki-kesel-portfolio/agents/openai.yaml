@@ -1,0 +1,6 @@
+interface:
+  display_name: "Miki Kesel Portfolio"
+  short_description: "Repo-specific patterns and workflows for miki-kesel-portfolio"
+  default_prompt: "Use the miki-kesel-portfolio repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
