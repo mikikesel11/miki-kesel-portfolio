@@ -25,6 +25,9 @@
 # Local SQLite database (may contain contact submissions — keep out of public repo)
 /database/*.sqlite
 /database/*.sqlite-journal
+# Locally-installed ECC skills (personal tooling); keep the project's own skill
+.claude/skills/*
+!.claude/skills/miki-kesel-portfolio/
 _ide_helper.php
 Homestead.json
 Homestead.yaml
