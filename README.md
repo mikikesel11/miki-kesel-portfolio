@@ -1,7 +1,7 @@
 # Miki Kesel — Portfolio
 
-A clean, single-page personal portfolio: achievements, current goals, and project
-snippets. See [DESIGN.md](DESIGN.md) for the full system design and trade-offs.
+A clean, single-page personal portfolio: project snippets, current goals, and
+certifications. See [DESIGN.md](DESIGN.md) for the full system design and trade-offs.
 
 **Stack:** Laravel 13 · Livewire 4 · Vue 3 · Tailwind CSS v4 · Vite · SQLite
 
@@ -46,7 +46,7 @@ All site content is version-controlled flat files — **edit, commit, deploy**:
 |---|---|
 | Name, tagline, socials, CV path | `content/profile.php` |
 | Current goals | `content/goals.php` |
-| Achievements | `content/achievements.php` |
+| Certifications | `content/certifications.php` |
 | Project snippets | `content/projects/*.md` (one Markdown file each, with front-matter) |
 
 Content is cached, so after editing run:
@@ -63,7 +63,8 @@ php artisan content:flush
 ## Contact form
 
 Submissions are stored in the `contact_submissions` table and a notification is
-emailed to `MAIL_FROM_ADDRESS`. The queue runs synchronously
+emailed to `CONTACT_TO_ADDRESS` (falls back to `MAIL_FROM_ADDRESS`) via Brevo's
+transactional API (`MAIL_MAILER=brevo`). The queue runs synchronously
 (`QUEUE_CONNECTION=sync`), so the email sends inline during the request — no queue
 worker needed. In local dev the default mail driver is `log`, so messages land in
 `storage/logs/laravel.log`; configure mail in `.env` to actually send.
