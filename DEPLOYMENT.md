@@ -18,8 +18,9 @@ Most steps generalise to any cPanel/CloudLinux shared host.
 - **Confirm PHP 8.3+** is available in the CloudLinux **PHP Selector** (the app
   requires `^8.3`). Ask pre-sales if unsure — this is the only hard blocker.
 - A **domain** pointed at the hosting (via Eco's nameservers or an A record).
-- A **transactional email** account for the contact form (Resend, Brevo,
-  Mailgun, Postmark…). Free tiers are plenty. You'll need SMTP credentials.
+- A **Brevo** account for the contact form (free tier is plenty). You'll need a
+  Brevo **API key** (`xkeysib-…`) and a **verified sender** identity — mail is
+  sent via Brevo's transactional API, not SMTP.
 - Local tooling: PHP 8.3+, Composer, Node 22+ (only for building).
 
 ---
@@ -112,16 +113,19 @@ DB_PASSWORD=your_pass
 CACHE_STORE=database
 SESSION_DRIVER=database
 
-# --- Mail (contact form) ---
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.yourprovider.com
-MAIL_PORT=587
-MAIL_USERNAME=...
-MAIL_PASSWORD=...
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="hello@your-domain.co.uk"   # contact messages are sent here
+# --- Mail (contact form, via Brevo transactional API) ---
+MAIL_MAILER=brevo
+BREVO_API_KEY=xkeysib-...                      # Brevo API key; powers mail + event tracking
+MAIL_FROM_ADDRESS="miki@your-domain.co.uk"     # MUST be a Brevo-verified sender
 MAIL_FROM_NAME="${APP_NAME}"
+CONTACT_TO_ADDRESS=you@gmail.com               # where notifications land; defaults to MAIL_FROM_ADDRESS
 ```
+
+> The **From** address must be a Brevo-verified sender or the API rejects the
+> send. The **recipient** (`CONTACT_TO_ADDRESS`) can be any inbox and is
+> independent of the sender; leave it blank to reuse `MAIL_FROM_ADDRESS`.
+> Diagnose delivery on the server with `php artisan mail:test you@gmail.com` —
+> it prints the active mailer, From, masked key, and the real transport error.
 
 > If you use **SQLite** instead of MySQL, create the file outside the web root
 > (e.g. `~/portfolio/database/database.sqlite`), set `DB_DATABASE` to its
@@ -140,6 +144,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 php artisan content:flush         # clear cached flat-file content
+php artisan mail:test you@gmail.com  # verify Brevo delivery (optional)
 ```
 
 Make sure `storage/` and `bootstrap/cache/` are writable by the web user
@@ -175,7 +180,8 @@ the control panel → **Cron Jobs**:
 - [ ] Light/dark toggle works and persists.
 - [ ] Projects filter/search/sort works (Vue island loaded — check `public/build` uploaded).
 - [ ] "Download CV" downloads `MikiKeselResume.pdf`.
-- [ ] Contact form: submit a test message → row appears in the DB **and** an email arrives at `MAIL_FROM_ADDRESS`.
+- [ ] Mail transport: `php artisan mail:test you@gmail.com` reports `Sent.` and the email arrives.
+- [ ] Contact form: submit a test message → row appears in the DB **and** an email arrives at `CONTACT_TO_ADDRESS`.
 - [ ] View page source: `og:image` / `og:url` are absolute `https://your-domain…` URLs. Validate with the LinkedIn Post Inspector or opengraph.xyz.
 - [ ] `https://your-domain.co.uk/og-image.png` returns the share card.
 
